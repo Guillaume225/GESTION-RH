@@ -1,5 +1,5 @@
-import { Response, NextFunction } from 'express';
-import { AuthRequest } from '../middleware/auth';
+import type { Response, NextFunction } from 'express';
+import type { AuthRequest } from '../middleware/auth';
 import { recruitmentService } from '../services/recruitment.service';
 
 export class RecruitmentController {

@@ -1,5 +1,5 @@
-import { Response, NextFunction } from 'express';
-import { AuthRequest } from '../middleware/auth';
+import type { Response, NextFunction } from 'express';
+import type { AuthRequest } from '../middleware/auth';
 import { reportingService } from '../services/reporting.service';
 
 export class ReportingController {
