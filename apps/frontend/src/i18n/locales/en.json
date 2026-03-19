@@ -1,0 +1,146 @@
+{
+  "common": {
+    "appName": "ERP HR",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "actions": "Actions",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "yes": "Yes",
+    "no": "No",
+    "noData": "No data available",
+    "error": "An error occurred",
+    "success": "Operation successful"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Sign in",
+    "loginError": "Invalid credentials",
+    "welcome": "Welcome to ERP HR"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "employees": "Employees",
+    "leaves": "Leaves",
+    "payroll": "Payroll",
+    "recruitment": "Recruitment",
+    "performance": "Performance",
+    "training": "Training",
+    "documents": "Documents",
+    "timeTracking": "Time Tracking",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalEmployees": "Total Employees",
+    "pendingLeaves": "Pending Leaves",
+    "monthlyPayroll": "Monthly Payroll",
+    "openPositions": "Open Positions",
+    "departmentDistribution": "Department Distribution",
+    "recentActivities": "Recent Activities"
+  },
+  "employees": {
+    "title": "Employee Management",
+    "addEmployee": "Add Employee",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "department": "Department",
+    "position": "Position",
+    "hireDate": "Hire Date",
+    "status": "Status",
+    "contractType": "Contract Type",
+    "salary": "Salary",
+    "active": "Active",
+    "inactive": "Inactive",
+    "onLeave": "On Leave"
+  },
+  "leaves": {
+    "title": "Leave Management",
+    "requestLeave": "Request Leave",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "type": "Type",
+    "reason": "Reason",
+    "status": "Status",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "balance": "Leave Balance",
+    "calendar": "Team Calendar"
+  },
+  "payroll": {
+    "title": "Payroll Management",
+    "generate": "Generate Payslips",
+    "period": "Period",
+    "grossSalary": "Gross Salary",
+    "netSalary": "Net Salary",
+    "deductions": "Deductions",
+    "validate": "Validate",
+    "validated": "Validated",
+    "draft": "Draft"
+  },
+  "recruitment": {
+    "title": "Recruitment",
+    "jobOffers": "Job Offers",
+    "candidates": "Candidates",
+    "pipeline": "Pipeline",
+    "createOffer": "Create Offer",
+    "publish": "Publish",
+    "close": "Close"
+  },
+  "performance": {
+    "title": "Performance",
+    "evaluations": "Evaluations",
+    "objectives": "Objectives",
+    "createEvaluation": "Create Evaluation",
+    "score": "Score",
+    "progress": "Progress"
+  },
+  "training": {
+    "title": "Training",
+    "catalog": "Catalog",
+    "enroll": "Enroll",
+    "enrolled": "Enrolled",
+    "completed": "Completed",
+    "capacity": "Capacity"
+  },
+  "documents": {
+    "title": "Documents",
+    "upload": "Upload",
+    "download": "Download",
+    "type": "Type",
+    "size": "Size"
+  },
+  "timeTracking": {
+    "title": "Time Tracking",
+    "clockIn": "Clock In",
+    "clockOut": "Clock Out",
+    "weekSummary": "Weekly Summary",
+    "totalHours": "Total Hours",
+    "overtime": "Overtime"
+  },
+  "reports": {
+    "title": "Reports & Analytics",
+    "turnover": "Turnover Rate",
+    "absenteeism": "Absenteeism Rate",
+    "payrollSummary": "Payroll Summary",
+    "agePyramid": "Age Pyramid"
+  }
+}

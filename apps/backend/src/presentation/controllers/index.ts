@@ -1,0 +1,10 @@
+export { AuthController } from './auth.controller.js';
+export { EmployeeController } from './employee.controller.js';
+export { LeaveController } from './leave.controller.js';
+export { PayrollController } from './payroll.controller.js';
+export { RecruitmentController } from './recruitment.controller.js';
+export { PerformanceController } from './performance.controller.js';
+export { TrainingController } from './training.controller.js';
+export { DocumentController } from './document.controller.js';
+export { TimeTrackingController } from './time-tracking.controller.js';
+export { ReportingController } from './reporting.controller.js';

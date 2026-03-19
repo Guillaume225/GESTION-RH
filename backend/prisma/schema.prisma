@@ -1,0 +1,437 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// Module Administration & Auth
+// ==========================================
+
+// Role: SUPER_ADMIN, ADMIN, HR_MANAGER, MANAGER, EMPLOYEE
+// EmployeeStatus: ACTIVE, INACTIVE, ON_LEAVE, TERMINATED
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String
+  role          String   @default("EMPLOYEE")
+  isActive      Boolean  @default(true)
+  lastLogin     DateTime?
+  employee      Employee?
+  auditLogs     AuditLog[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("users")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@map("audit_logs")
+}
+
+model CompanySettings {
+  id                String @id @default(cuid())
+  name              String
+  address           String?
+  phone             String?
+  email             String?
+  logo              String?
+  workingDaysPerWeek Int   @default(5)
+  workingHoursPerDay Float @default(8)
+  fiscalYearStart   Int   @default(1)
+  defaultLeaveBalance Int  @default(25)
+  currency          String @default("EUR")
+  timezone          String @default("Europe/Paris")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("company_settings")
+}
+
+// ==========================================
+// Module Gestion des Employes
+// ==========================================
+
+model Department {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  description String?
+  managerId   String?
+  parentId    String?
+  parent      Department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children    Department[] @relation("DepartmentHierarchy")
+  employees   Employee[]
+  positions   Position[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("departments")
+}
+
+model Position {
+  id           String     @id @default(cuid())
+  title        String
+  description  String?
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+  minSalary    Float?
+  maxSalary    Float?
+  employees    Employee[]
+  jobOffers    JobOffer[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("positions")
+}
+
+model Employee {
+  id              String   @id @default(cuid())
+  employeeNumber  String   @unique
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  firstName       String
+  lastName        String
+  dateOfBirth     DateTime?
+  gender          String?
+  phone           String?
+  address         String?
+  city            String?
+  zipCode         String?
+  country         String?  @default("France")
+  nationality     String?
+  socialSecNumber String?
+  positionId      String
+  position        Position @relation(fields: [positionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  departmentId    String
+  department      Department @relation(fields: [departmentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  managerId       String?
+  manager         Employee?  @relation("ManagerRelation", fields: [managerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subordinates    Employee[] @relation("ManagerRelation")
+  hireDate        DateTime
+  endDate         DateTime?
+  status          String   @default("ACTIVE")
+  contractType    String?
+  baseSalary      Float?
+  documents       Document[]
+  leaveRequests   LeaveRequest[]
+  leaveBalances   LeaveBalance[]
+  payslips        Payslip[]
+  positionHistory PositionHistory[]
+  evaluations     Evaluation[]
+  evaluationsGiven Evaluation[]  @relation("EvaluatorRelation")
+  objectives      Objective[]
+  trainings       TrainingEnrollment[]
+  timeEntries     TimeEntry[]
+  candidateRef    Candidate?     @relation("HiredCandidate")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("employees")
+}
+
+model PositionHistory {
+  id          String   @id @default(cuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  positionTitle String
+  department  String
+  startDate   DateTime
+  endDate     DateTime?
+  salary      Float?
+  reason      String?
+  createdAt   DateTime @default(now())
+
+  @@map("position_history")
+}
+
+// ==========================================
+// Module Gestion des Conges et Absences
+// ==========================================
+
+model LeaveRequest {
+  id          String   @id @default(cuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  type        String
+  startDate   DateTime
+  endDate     DateTime
+  totalDays   Float
+  reason      String?
+  status      String   @default("PENDING")
+  approvedBy  String?
+  approvedAt  DateTime?
+  rejectedBy  String?
+  rejectedAt  DateTime?
+  rejectionReason String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("leave_requests")
+}
+
+model LeaveBalance {
+  id          String   @id @default(cuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  type        String
+  year        Int
+  allocated   Float    @default(0)
+  used        Float    @default(0)
+  pending     Float    @default(0)
+  remaining   Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([employeeId, type, year])
+  @@map("leave_balances")
+}
+
+// ==========================================
+// Module Gestion de la Paie
+// ==========================================
+
+model Payslip {
+  id             String        @id @default(cuid())
+  employeeId     String
+  employee       Employee      @relation(fields: [employeeId], references: [id])
+  period         String
+  year           Int
+  month          Int
+  baseSalary     Float
+  grossSalary    Float
+  netSalary      Float
+  totalDeductions Float
+  totalBonuses   Float
+  items          PayslipItem[]
+  status         String        @default("DRAFT")
+  paidAt         DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@unique([employeeId, year, month])
+  @@map("payslips")
+}
+
+model PayslipItem {
+  id        String  @id @default(cuid())
+  payslipId String
+  payslip   Payslip @relation(fields: [payslipId], references: [id], onDelete: Cascade)
+  label     String
+  type      String
+  rate      Float?
+  base      Float?
+  amount    Float
+
+  @@map("payslip_items")
+}
+
+// ==========================================
+// Module Recrutement
+// ==========================================
+
+model JobOffer {
+  id          String    @id @default(cuid())
+  title       String
+  positionId  String?
+  position    Position? @relation(fields: [positionId], references: [id])
+  description String
+  requirements String?
+  location    String?
+  contractType String?
+  salaryMin   Float?
+  salaryMax   Float?
+  status      String   @default("DRAFT")
+  publishedAt DateTime?
+  closedAt    DateTime?
+  candidates  Candidate[]
+  interviews  Interview[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("job_offers")
+}
+
+model Candidate {
+  id          String    @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  phone       String?
+  resumeUrl   String?
+  coverLetter String?
+  jobOfferId  String
+  jobOffer    JobOffer  @relation(fields: [jobOfferId], references: [id])
+  stage       String    @default("NEW")
+  rating      Int?
+  notes       String?
+  hiredAsId   String?   @unique
+  hiredAs     Employee? @relation("HiredCandidate", fields: [hiredAsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  interviews  Interview[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("candidates")
+}
+
+model Interview {
+  id          String    @id @default(cuid())
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+  jobOfferId  String
+  jobOffer    JobOffer  @relation(fields: [jobOfferId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  scheduledAt DateTime
+  duration    Int       @default(60)
+  type        String
+  interviewers String?
+  feedback    String?
+  rating      Int?
+  status      String    @default("SCHEDULED")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("interviews")
+}
+
+// ==========================================
+// Module Evaluation des Performances
+// ==========================================
+
+model Evaluation {
+  id           String    @id @default(cuid())
+  employeeId   String
+  employee     Employee  @relation(fields: [employeeId], references: [id])
+  evaluatorId  String
+  evaluator    Employee  @relation("EvaluatorRelation", fields: [evaluatorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type         String
+  period       String
+  status       String    @default("DRAFT")
+  overallRating Float?
+  strengths    String?
+  improvements String?
+  comments     String?
+  objectives   Objective[] @relation("EvaluationObjectives")
+  completedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("evaluations")
+}
+
+model Objective {
+  id           String      @id @default(cuid())
+  employeeId   String
+  employee     Employee    @relation(fields: [employeeId], references: [id])
+  evaluationId String?
+  evaluation   Evaluation? @relation("EvaluationObjectives", fields: [evaluationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  title        String
+  description  String?
+  targetDate   DateTime?
+  progress     Int         @default(0)
+  status       String      @default("IN_PROGRESS")
+  weight       Float?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@map("objectives")
+}
+
+// ==========================================
+// Module Formation et Developpement
+// ==========================================
+
+model Training {
+  id          String               @id @default(cuid())
+  title       String
+  description String?
+  provider    String?
+  type        String?
+  duration    Int?
+  maxParticipants Int?
+  cost        Float?
+  startDate   DateTime?
+  endDate     DateTime?
+  location    String?
+  status      String               @default("PLANNED")
+  enrollments TrainingEnrollment[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@map("trainings")
+}
+
+model TrainingEnrollment {
+  id          String   @id @default(cuid())
+  trainingId  String
+  training    Training @relation(fields: [trainingId], references: [id])
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  status      String   @default("ENROLLED")
+  completedAt DateTime?
+  certificate String?
+  feedback    String?
+  rating      Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([trainingId, employeeId])
+  @@map("training_enrollments")
+}
+
+// ==========================================
+// Module Documents RH
+// ==========================================
+
+model Document {
+  id          String   @id @default(cuid())
+  name        String
+  type        String
+  category    String?
+  filePath    String
+  fileSize    Int?
+  mimeType    String?
+  employeeId  String?
+  employee    Employee? @relation(fields: [employeeId], references: [id])
+  version     Int      @default(1)
+  isTemplate  Boolean  @default(false)
+  uploadedBy  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("documents")
+}
+
+// ==========================================
+// Module Temps de Travail
+// ==========================================
+
+model TimeEntry {
+  id          String    @id @default(cuid())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  date        DateTime
+  clockIn     DateTime
+  clockOut    DateTime?
+  breakMinutes Int      @default(0)
+  totalHours  Float?
+  overtime    Float?    @default(0)
+  status      String    @default("PENDING")
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("time_entries")
+}

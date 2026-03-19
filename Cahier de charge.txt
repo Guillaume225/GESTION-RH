@@ -1,0 +1,115 @@
+# Mission : Développement d'un ERP de Gestion des Ressources Humaines
+
+Tu es un expert en développement logiciel spécialisé dans la création d'applications d'entreprise. 
+Ta mission est de concevoir et développer un ERP complet de gestion des ressources humaines (RH).
+
+## Objectif du Projet
+
+Créer une application ERP RH moderne, scalable et sécurisée permettant de gérer l'ensemble du cycle de vie des employés dans une entreprise.
+
+## Stack Technique Recommandée
+
+### Frontend
+- **Framework** : React 18+ avec TypeScript
+- **UI Library** : Material-UI (MUI) ou Shadcn/ui + Tailwind CSS
+- **State Management** : Redux Toolkit ou Zustand
+- **Routing** : React Router v6
+- **Forms** : React Hook Form + Zod pour validation
+- **Data Fetching** : TanStack Query (React Query)
+
+### Backend
+- **Runtime** : Node.js avec Express.js ou NestJS
+- **Language** : TypeScript
+- **ORM** : Prisma ou TypeORM
+- **Authentication** : JWT + bcrypt
+- **API** : RESTful ou GraphQL (Apollo Server)
+
+### Base de Données
+- **Principale** : PostgreSQL
+- **Cache** : Redis (optionnel pour sessions/cache)
+
+### DevOps & Outils
+- **Conteneurisation** : Docker + Docker Compose
+- **Testing** : Jest + React Testing Library + Supertest
+- **Documentation API** : Swagger/OpenAPI
+- **Linting** : ESLint + Prettier
+- **Git Hooks** : Husky + lint-staged
+
+## Modules Fonctionnels Requis
+
+### 1. Module Gestion des Employés
+- CRUD complet des profils employés
+- Informations personnelles (nom, prénom, date de naissance, adresse, contact)
+- Informations professionnelles (poste, département, manager, date d'embauche, statut)
+- Documents attachés (CV, contrat, diplômes)
+- Historique des postes et promotions
+- Organigramme interactif
+
+### 2. Module Gestion des Congés et Absences
+- Demande de congés (congés payés, RTT, maladie, sans solde)
+- Workflow de validation (manager → RH)
+- Calcul automatique des soldes de congés
+- Calendrier des absences de l'équipe
+- Notifications par email
+- Export des plannings
+
+### 3. Module Gestion de la Paie
+- Fiches de paie digitales
+- Calcul des salaires (base, primes, déductions)
+- Historique des salaires
+- Export vers logiciels comptables
+- Gestion des acomptes
+- Déclarations sociales (optionnel)
+
+### 4. Module Recrutement
+- Gestion des offres d'emploi
+- Suivi des candidatures (pipeline Kanban)
+- Base de données candidats
+- Planification des entretiens
+- Évaluation des candidats
+- Processus d'onboarding
+
+### 5. Module Évaluation des Performances
+- Définition des objectifs (OKR/KPI)
+- Entretiens annuels et mid-year reviews
+- Feedback 360°
+- Plans de développement individuel (PDI)
+- Historique des évaluations
+
+### 6. Module Formation et Développement
+- Catalogue de formations
+- Inscriptions et suivi
+- Budget formation par employé
+- Certificats et attestations
+- Plans de carrière
+
+### 7. Module Documents RH
+- Bibliothèque de documents (règlement intérieur, procédures)
+- Templates de documents
+- Signature électronique
+- Gestion des versions
+- Stockage sécurisé
+
+### 8. Module Temps de Travail
+- Pointage (horaires d'arrivée/départ)
+- Suivi des heures supplémentaires
+- Gestion des plannings
+- Export pour paie
+
+### 9. Module Reporting et Analytics
+- Tableaux de bord RH
+- Indicateurs clés (turnover, absentéisme, masse salariale)
+- Pyramide des âges
+- Graphiques et visualisations
+- Export Excel/PDF
+
+### 10. Module Administration
+- Gestion des rôles et permissions (RBAC)
+- Paramétrage de l'entreprise
+- Configuration des workflows
+- Logs d'audit
+- Paramètres système
+
+## Architecture Technique
+
+### Structure du Projet (Monorepo recommandé)
