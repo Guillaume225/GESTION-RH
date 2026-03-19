@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import type { PrismaClient, Prisma } from '@prisma/client';
 import type { IEmployeeRepository } from '../../../domain/repositories/employee.repository.js';
 import type { Employee, EmployeeFilter } from '../../../domain/entities/employee.entity.js';
 import type { PaginationOptions, PaginatedResult } from '../../../domain/entities/base.entity.js';

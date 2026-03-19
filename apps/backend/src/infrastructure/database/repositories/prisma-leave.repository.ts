@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import type { PrismaClient, Prisma } from '@prisma/client';
 import type { ILeaveRepository } from '../../../domain/repositories/leave.repository.js';
 import type { LeaveRequest, LeaveBalance } from '../../../domain/entities/leave.entity.js';
 import type { PaginationOptions, PaginatedResult } from '../../../domain/entities/base.entity.js';
