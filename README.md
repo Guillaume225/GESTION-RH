@@ -91,13 +91,6 @@ Le backend sera disponible sur `http://localhost:3000/api/v1` et le frontend sur
 
 ## Accès par défaut
 
-| Email | Mot de passe | Rôle |
-|-------|-------------|------|
-| admin@label-rh.fr | Admin123! | SUPER_ADMIN |
-| rh@label-rh.fr | Rh123456! | HR_MANAGER |
-| manager@label-rh.fr | Manager1! | MANAGER |
-| employe@label-rh.fr | Employe1! | EMPLOYEE |
-
 ## Documentation
 
 - [ARCHITECTURE.md](./docs/ARCHITECTURE.md) — Architecture technique détaillée
