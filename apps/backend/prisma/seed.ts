@@ -1,7 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const prisma = new PrismaClient();
+const SEED_PASSWORD = process.env.SEED_PASSWORD || 'ChangeMeInProduction1!';
 
 async function main() {
   console.log('🌱 Seeding database...');
@@ -123,7 +127,7 @@ async function main() {
   });
 
   // Users & Employees
-  const passwordHash = await bcrypt.hash('Admin123!', 12);
+  const passwordHash = await bcrypt.hash(SEED_PASSWORD, 12);
 
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@label.fr' },
@@ -158,7 +162,7 @@ async function main() {
     update: {},
     create: {
       email: 'rh@label.fr',
-      passwordHash: await bcrypt.hash('Rh123456!', 12),
+      passwordHash: await bcrypt.hash(SEED_PASSWORD, 12),
       role: 'HR_MANAGER',
     },
   });
@@ -186,7 +190,7 @@ async function main() {
     update: {},
     create: {
       email: 'manager@label.fr',
-      passwordHash: await bcrypt.hash('Manager1!', 12),
+      passwordHash: await bcrypt.hash(SEED_PASSWORD, 12),
       role: 'MANAGER',
     },
   });

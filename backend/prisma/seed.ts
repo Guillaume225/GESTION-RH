@@ -1,7 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const prisma = new PrismaClient();
+const SEED_PASSWORD = process.env.SEED_PASSWORD || 'ChangeMeInProduction1!';
 
 async function main() {
   // Paramètres entreprise
@@ -61,7 +65,7 @@ async function main() {
   });
 
   // Utilisateur Admin
-  const hashedPassword = await bcrypt.hash('Admin123!', 12);
+  const hashedPassword = await bcrypt.hash(SEED_PASSWORD, 12);
 
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@monentreprise.fr' },
