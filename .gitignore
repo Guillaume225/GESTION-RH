@@ -8,6 +8,7 @@ dist/
 build/
 *.tsbuildinfo
 .turbo/
+.vite/
 
 # Environment
 .env
@@ -45,3 +46,4 @@ docker-data/
 # Docker volumes
 pgdata/
 redis-data/
+node_modules
