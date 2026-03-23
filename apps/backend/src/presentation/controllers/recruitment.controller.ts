@@ -80,9 +80,10 @@ export class RecruitmentController {
   };
 
   // --- Pipeline ---
-  getPipelineStats = async (_req: AuthRequest, res: Response, next: NextFunction) => {
+  getPipelineStats = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      const stats = await this.recruitmentService.getPipelineStats();
+      const { jobOfferId } = req.query as any;
+      const stats = await this.recruitmentService.getPipelineStats(jobOfferId);
       res.json({ success: true, data: stats });
     } catch (err) {
       next(err);

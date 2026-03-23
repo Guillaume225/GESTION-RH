@@ -25,7 +25,8 @@ export class PayrollController {
 
   generatePayslip = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      const payslip = await this.payrollService.generatePayslip(req.body);
+      const { employeeId, month, year } = req.body;
+      const payslip = await this.payrollService.generatePayslip(employeeId, month, year);
       res.status(201).json({ success: true, data: payslip });
     } catch (err) {
       next(err);
@@ -43,7 +44,8 @@ export class PayrollController {
 
   generateBulk = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      const result = await this.payrollService.generateBulkPayslips(req.body);
+      const { month, year } = req.body;
+      const result = await this.payrollService.generateBulkPayslips(month, year);
       res.status(201).json({ success: true, data: result });
     } catch (err) {
       next(err);

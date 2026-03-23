@@ -185,7 +185,7 @@ model PositionHistory {
   employeeId  String
   employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   positionId  String
-  position    Position @relation(fields: [positionId], references: [id])
+  position    Position @relation(fields: [positionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   startDate   DateTime
   endDate     DateTime?
   salary      Float?

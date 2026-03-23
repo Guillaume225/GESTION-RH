@@ -20,6 +20,15 @@ export class RecruitmentService {
     return { data, total, page, limit, totalPages: Math.ceil(total / limit) };
   }
 
+  async getJobOfferById(id: string) {
+    const offer = await this.prisma.jobOffer.findUnique({
+      where: { id },
+      include: { department: { select: { name: true } }, candidates: true },
+    });
+    if (!offer) throw new AppError('Offre d\'emploi non trouvée', 404);
+    return offer;
+  }
+
   async createJobOffer(data: { title: string; description: string; departmentId?: string; contractType?: string; location?: string; salaryMin?: number; salaryMax?: number }) {
     return this.prisma.jobOffer.create({ data: data as never });
   }

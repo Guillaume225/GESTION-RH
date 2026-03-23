@@ -8,7 +8,8 @@ export class LeaveController {
 
   findAll = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      const result = await this.leaveService.findAll(req.query as any);
+      const { page = 1, limit = 20, employeeId } = req.query as any;
+      const result = await this.leaveService.findAll(Number(page), Number(limit), employeeId);
       res.json({ success: true, data: result });
     } catch (err) {
       next(err);
@@ -26,8 +27,8 @@ export class LeaveController {
 
   create = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) throw new AppError('Non authentifié', 401);
-      const leave = await this.leaveService.create(req.user.userId, req.body);
+      if (!req.userId) throw new AppError('Non authentifié', 401);
+      const leave = await this.leaveService.create(req.userId, req.body);
       res.status(201).json({ success: true, data: leave });
     } catch (err) {
       next(err);
@@ -36,8 +37,8 @@ export class LeaveController {
 
   review = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) throw new AppError('Non authentifié', 401);
-      const leave = await this.leaveService.review(req.params.id, req.user.userId, req.body);
+      if (!req.userId) throw new AppError('Non authentifié', 401);
+      const leave = await this.leaveService.review(req.params.id, req.userId, req.body);
       res.json({ success: true, data: leave });
     } catch (err) {
       next(err);
@@ -55,7 +56,8 @@ export class LeaveController {
 
   getTeamCalendar = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      const calendar = await this.leaveService.getTeamCalendar(req.query as any);
+      const { managerEmployeeId, startDate, endDate } = req.query as any;
+      const calendar = await this.leaveService.getTeamCalendar(managerEmployeeId, new Date(startDate), new Date(endDate));
       res.json({ success: true, data: calendar });
     } catch (err) {
       next(err);

@@ -17,7 +17,7 @@ export class TimeTrackingController {
 
   clockIn = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) throw new AppError('Non authentifié', 401);
+      if (!req.userId) throw new AppError('Non authentifié', 401);
       const entry = await this.timeTrackingService.clockIn(req.body.employeeId);
       res.status(201).json({ success: true, data: entry });
     } catch (err) {
@@ -38,7 +38,6 @@ export class TimeTrackingController {
     try {
       const summary = await this.timeTrackingService.getWeeklySummary(
         req.params.employeeId,
-        new Date(req.query.weekStart as string),
       );
       res.json({ success: true, data: summary });
     } catch (err) {

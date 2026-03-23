@@ -31,8 +31,8 @@ export class AuthService {
     }
 
     const payload: TokenPayload = { userId: user.id, email: user.email, role: user.role };
-    const accessToken = jwt.sign(payload, this.jwtSecret, { expiresIn: this.jwtExpiresIn });
-    const refreshToken = jwt.sign(payload, this.jwtRefreshSecret, { expiresIn: this.jwtRefreshExpiresIn });
+    const accessToken = jwt.sign(payload, this.jwtSecret, { expiresIn: this.jwtExpiresIn as any });
+    const refreshToken = jwt.sign(payload, this.jwtRefreshSecret, { expiresIn: this.jwtRefreshExpiresIn as any });
 
     await this.userRepo.update(user.id, { lastLogin: new Date() } as never);
     await this.userRepo.updateRefreshToken(user.id, refreshToken);
@@ -74,8 +74,8 @@ export class AuthService {
       }
 
       const newPayload: TokenPayload = { userId: user.id, email: user.email, role: user.role };
-      const accessToken = jwt.sign(newPayload, this.jwtSecret, { expiresIn: this.jwtExpiresIn });
-      const refreshToken = jwt.sign(newPayload, this.jwtRefreshSecret, { expiresIn: this.jwtRefreshExpiresIn });
+      const accessToken = jwt.sign(newPayload, this.jwtSecret, { expiresIn: this.jwtExpiresIn as any });
+      const refreshToken = jwt.sign(newPayload, this.jwtRefreshSecret, { expiresIn: this.jwtRefreshExpiresIn as any });
 
       await this.userRepo.updateRefreshToken(user.id, refreshToken);
       return { accessToken, refreshToken };

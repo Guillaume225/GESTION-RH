@@ -3,7 +3,7 @@ import { config } from '../config/index.js';
 
 export const globalLimiter = rateLimit({
   windowMs: config.rateLimit.windowMs,
-  max: config.rateLimit.max,
+  max: config.rateLimit.maxRequests,
   standardHeaders: true,
   legacyHeaders: false,
   message: {

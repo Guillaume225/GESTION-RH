@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: config.upload.maxSize },
+  limits: { fileSize: config.upload.maxFileSize },
 });
 
 export function createDocumentRoutes(controller: DocumentController, authService: AuthService): Router {

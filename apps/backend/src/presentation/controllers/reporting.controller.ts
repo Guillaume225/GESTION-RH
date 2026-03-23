@@ -23,20 +23,18 @@ export class ReportingController {
     }
   };
 
-  getTurnoverRate = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  getTurnoverRate = async (_req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      const year = parseInt(req.query.year as string) || new Date().getFullYear();
-      const data = await this.reportingService.getTurnoverRate(year);
+      const data = await this.reportingService.getTurnoverRate();
       res.json({ success: true, data });
     } catch (err) {
       next(err);
     }
   };
 
-  getAbsenteeismRate = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  getAbsenteeismRate = async (_req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      const year = parseInt(req.query.year as string) || new Date().getFullYear();
-      const data = await this.reportingService.getAbsenteeismRate(year);
+      const data = await this.reportingService.getAbsenteeismRate();
       res.json({ success: true, data });
     } catch (err) {
       next(err);

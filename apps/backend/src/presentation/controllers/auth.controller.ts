@@ -37,8 +37,8 @@ export class AuthController {
 
   changePassword = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) throw new AppError('Non authentifié', 401);
-      await this.authService.changePassword(req.user.userId, req.body);
+      if (!req.userId) throw new AppError('Non authentifié', 401);
+      await this.authService.changePassword(req.userId, req.body);
       res.json({ success: true, message: 'Mot de passe modifié avec succès' });
     } catch (err) {
       next(err);
@@ -47,8 +47,8 @@ export class AuthController {
 
   getProfile = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) throw new AppError('Non authentifié', 401);
-      const profile = await this.authService.getProfile(req.user.userId);
+      if (!req.userId) throw new AppError('Non authentifié', 401);
+      const profile = await this.authService.getProfile(req.userId);
       res.json({ success: true, data: profile });
     } catch (err) {
       next(err);

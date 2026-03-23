@@ -30,7 +30,7 @@ export function createApp() {
 
   // --- Global middleware ---
   app.use(helmet());
-  app.use(cors({ origin: config.cors.origin, credentials: true }));
+  app.use(cors({ origin: config.corsOrigin, credentials: true }));
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true }));
   app.use(morgan('combined'));
@@ -44,8 +44,8 @@ export function createApp() {
   const authService = new AuthService(
     userRepository,
     config.jwt.secret,
-    config.jwt.refreshSecret,
     config.jwt.expiresIn,
+    config.jwt.refreshSecret,
     config.jwt.refreshExpiresIn,
   );
   const employeeService = new EmployeeService(employeeRepository);
